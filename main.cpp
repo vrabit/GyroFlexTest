@@ -23,19 +23,24 @@
 
 //flex
 #define INPUT_V 3.3         // supplied voltage
-#define MAX_V 3.3           // max allowed input voltage
+#define MAX_V 3.3           // max allowed input volate
+#define RESISTOR 22000      // resistor value
 
 BufferedSerial pc(USBTX, USBRX, 9600); // usb uart
 I2C IMU(I2C_SDA, I2C_SCL);
 
-AnalogIn Flex1(A0);
+AnalogIn thumbFlex(A6);
+AnalogIn indexFlex(A3);
+AnalogIn middleFlex(A2);
+AnalogIn ringFlex(A1);
+AnalogIn pinkyFlex(A0);
 
 FileHandle *mbed::mbed_override_console(int fd){
     return &pc;
 }
 
 float flexResistance (float v){
-    return ((72600/v) - 22000);
+    return ((RESISTOR*(INPUT_V-v))/(v));
 }
 
 void toInt(char left, char right, char axis){
@@ -53,8 +58,21 @@ void toInt(char left, char right, char axis){
 int main()
 {
     // flex sensor 1
-    float v1 = 0.0;
-    int r1 = 0;
+    float thumbV = 0.0;
+    int thumbR = 0;
+
+    float indexV = 0.0;
+    int indexR = 0;
+
+    float middleV = 0.0;
+    int middleR = 0;
+
+    float ringV = 0.0;
+    int ringR = 0;
+
+    float pinkyV = 0.0;
+    int pinkyR = 0;
+    
 
     // gyro 
     char rx = '\0';
@@ -86,11 +104,24 @@ int main()
         gyroY = (gyroData[3] << 8) | gyroData[2];
         gyroZ = (gyroData[5] << 8) | gyroData[4];
 
-        v1 = (Flex1.read() * MAX_V);
-        r1 = (int)flexResistance(v1);
+    
+        indexV = (indexFlex.read() * MAX_V);
+        indexR = (int)flexResistance(indexV);
 
-        printf("X:%5d y:%5d z:%5d \n", gyroX, gyroY, gyroZ);
-        thread_sleep_for(50);
+        middleV = (middleFlex.read() * MAX_V);
+        middleR = (int)flexResistance(middleV);
+
+        ringV = (ringFlex.read() * MAX_V);
+        ringR = (int)flexResistance(ringV);
+
+        pinkyV = (pinkyFlex.read() * MAX_V);
+        pinkyR = (int)flexResistance(pinkyV);
+
+        thumbV = (thumbFlex.read() * MAX_V);
+        thumbR = (int)flexResistance(thumbV);
+        
+        printf("X:%5d y:%5d z:%5d F1:%6d F2:%6d F3:%6d F4:%6d F5:%6d \n", gyroX, gyroY, gyroZ, thumbR, indexR, middleR, ringR, pinkyR);
+        thread_sleep_for(200);
     }
 }
 
