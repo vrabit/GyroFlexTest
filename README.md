@@ -19,5 +19,6 @@ The sensor data is transmitted over I2C and can be read using a Python script vi
 
 <img width="160" height="258" alt="image" src="https://github.com/user-attachments/assets/3b244160-9f7c-40ed-8136-1fb56596861f" />
 <img width="250" height="250" alt="image" src="https://github.com/user-attachments/assets/0689eabf-8bba-4c67-98a1-dd9b39634cd5" />
+
 <img width="325" height="250" alt="image" src="https://github.com/user-attachments/assets/590d12fe-3d05-4eb0-8075-ac86a7095ed5" />
 <img width="250" height="250" alt="image" src="https://github.com/user-attachments/assets/f02972db-56c1-4695-ab95-a5db161ddffb" />
